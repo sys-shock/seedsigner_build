@@ -1,1 +1,94 @@
-# seedsigner_build
+Read Me
+=======
+
+# Important Info:
+______
+
+Date modified (Read Me/script): 20211001/20211001
+
+______
+
+>:warning: _Warning_ :warning:
+>
+>This script is currently in Alpha and experimental, download and use it at your own risk.
+>I need some help testing and getting the script to work properly. If you know shell scripting please consider helping out, thank you.
+
+______
+Build the SD card image based on: [2021-05-07-raspios-buster-armhf-lite.zip](https://www.raspberrypi.org/software/operating-systems/)
+
+SHA256: c5dad159a2775c687e9281b1a0e586f7471690ae28f2f2282c90e7d59f64273c
+
+______
+
+`seedsigner_build.sh`
+
+SHA256: f668b620e8048110fb36a121ef22bf6974c79bca5f0dda28cdf54339a151ae48
+
+MD5: 41b5cdcb5e26b0edd5aed7776c31664e
+
+______
+
+Run the script __ONCE__. This script manipulates text in a way that will create multiple of the same entries in text files if run more than once.
+
+You are _Highly_ encouraged to review this script (also compare the SHA256 or MD5 hash) before you run it and compare it to the process descibed by the [SeedSigner](https://github.com/SeedSigner/seedsigner) read me. The two should be fairly comparable. I noted what each function does above the script running.
+
+In order to check the SHA256 or MD5 hash on Linux open a terminal where you downloaded the script and run the command `sha256sum seedsigner_build.sh` or `md5sum seedsigner_build.sh`
+
+If you are on Windows you can pull up a powershell and run the command `certUtil -hashfile <path_to_file> <hash_algo(SHA256/MD5)>`
+
+## SeedSigner Build Script:
+______
+
+This script is intended to emulate every step in the manual build process for the [SeedSigner](https://github.com/SeedSigner/seedsigner) project in a quick and automated way to build from scratch. This script also goes a few steps further than the described process by removing the [Microsoft GPG key and vscode](https://www.reddit.com/r/linux/comments/lbu0t1/microsoft_repo_installed_on_all_raspberry_pis/) from the OS image.
+This script also disables the virtual memory as a default. If you want to keep the virtual memory, go into and edit the `seedsigner_build.sh` file and add a comment (#) before the 4 lines after the line `# (Optional) modify system swap config to disable virtual memory.`.
+It can also change the user password. This can be turned on by uncommenting (#) the commands to change the password.
+
+Currently the script can change the localization to English (e), French (f), German (g), Italian, (i), Portuguese (European) (pe), Portuguese (Brazilian) (pb), Spanish (Castilian) (sc), Spanish (Mexican) (sm), Spanish (Venezuelan) (sv), Arabic (United Arab Emeriates) (uae), Arabic (Iraq) (ai), Arabic (Saudi Arabian) (asa), Chinese (Hong Kong) (chk), Chinese (Mainland China) (cmc).
+
+>:warning: _Locale_ _Note_ :warning:
+>
+>I have not tested or tried out any other language setting other than english in the script (still need it to work once), as such more testing is required than what I can personally give to this little project at the moment. Any and all help is appreciated.
+
+
+:construction: Tested status :construction:
+
+| English (e) | French (f) | German (g) | Italian (i) | Portuguese (European) (pe) | Portuguese (Brazilian) (pb) | Spanish (Castilian) (sc) | Spanish (Mexican) (sm) | Spanish (Venezuelan) (sv) | Arabic (United Arab Emeriates) (uae) | Arabic (Iraq) (ai) | Arabic (Saudi Arabian) (asa) | Chinese (Hong Kong) (chk) | Chinese (Mainland China) (cmc) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: | :negative_squared_cross_mark: |
+
+
+### How to get started:
+______
+
+Download, verify, and then write the [Raspberry Pi Lite OS](https://www.raspberrypi.org/software/operating-systems/) to a micro SD card. I use [Balena Etcher](https://www.balena.io/etcher/) to write .iso images but you can write the image however you wish. Once you have the SD card with the raspios-lite image on it, mount the SD card to the same computer you downloaded the seedsigner_build.sh script to and do the following. 
+
+
+> :warning: __Warning__ :warning:
+>
+> Always verify your downloads by comparing the sha256 hash or by GPG key if available.
+
+
+#### Steps:
+______
+
+1. Take the seedsigner_build.sh file and copy/place it in the `/boot` folder of the SD card you just burned the RPI OS on to.
+2. Unmount the SD card and then put it in the RPI that you will be using to build the SeedSigner.
+3. Ensure the RPI is connected to the internet and then power the device on.
+4. Log in to the RPI under the `user - pi` with the `password - raspberry` (either SSH in or connect a keyboard and moniter to the RPI).
+5. Move to the build scripts location with `cd /boot`
+6. Make the script able to be executed with `sudo chmod a+x seedsigner_build.sh`
+7. Run the script `sudo ./seedsigner_build.sh`
+
+The script should now be running, just watch the terminal for any error messages and for any interaction you may need to do.
+
+##### Known Issues:
+______
+
+> The SD card (that the script is ran on) does not boot up when put into the RPI zero 1.3 and powered on.
+>
+> The script may not be able to find the `.profile` file for setting up the virtual enviroment.
+>
+> The command `mkvirtualenv` is not found. (possibly related to the .profile problem)
+>
+> Sometimes the dependencies will not download in one of the five iterations.
+
