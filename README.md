@@ -36,6 +36,26 @@ In order to check the SHA256 or MD5 hash on Linux open a terminal where you down
 
 If you are on Windows you can pull up a powershell and run the command `certUtil -hashfile <path_to_file> <hash_algo(SHA256/MD5)>`
 
+## How to contribute:
+
+> I am new to this and as such welcome other new contributors.
+
+As a starting point check the bottom of this ReadMe to find the initial issues of the script.
+Then after that parse through the script (and any open issues) and do one or both of the following ...
+
+1. Open an issue. Please provide details of the issue you found.
+
+2. Open a pull request. Please detail why you made the changes you did and the benefits (if any) that it brings.
+
+__Goals__ for this script:
+
+1. Get the script to work.
+
+2. Rewrite the script so it can be run more than once and not add un-needed text to config files.
+
+3. Rewrite the script to be more interactive.
+
+
 ## SeedSigner Build Script:
 ______
 
