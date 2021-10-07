@@ -12,32 +12,27 @@ sleep 3s
 
 # Enable the camera
 echo "Enabling camera..."
-sleep 1s
-sudo echo "" >> /boot/config.txt
 sudo echo "start_x=1" >> /boot/config.txt
 sudo echo "gpu_mem=128" >> /boot/config.txt
-sleep 2s
 if grep -q 'start_x=1\|gpu_mem=128' /boot/config.txt
-	then echo "Camera enabled..."
-	sleep 3s
-	else echo "Error: Camera may not be enabled, please run 'sudo raspi-config' after this script is finished to ensure the camera is enabled..."
-	sleep 10s
+then
+  	echo "Camera enabled..."
+else 
+  	echo "Error: Camera may not be enabled, please run 'sudo raspi-config' after this script is finished to ensure the camera is enabled..."
 fi
 
 # Enable SPI
 echo "Enabling SPI..."
-sleep 1s
 sudo sed -i "s/#dtparam=spi=on/dtparam=spi=on/g" /boot/config.txt
 if grep -q '#dtparam=spi=on' /boot/config.txt
-	then echo "Error: SPI may not be enabled, please run 'sudo raspi-config' after this script is finished to ensure SPI is enabled..."
-	sleep 10s
-	else echo "SPI enabled..."
-	sleep 3s
+then
+    echo "Error: SPI may not be enabled, please run 'sudo raspi-config' after this script is finished to ensure SPI is enabled..."
+else
+    echo "SPI enabled..."
 fi
 
 # Change the localization
 echo "Changing localization..."
-sleep 1s
 echo "Please choose your language prefrence, English [e], French [f], German [g], Italian, [i], Portuguese (European) [pe], Portuguese (Brazilian) [pb], Spanish (Castilian) [sc], Spanish (Mexican) [sm], Spanish (Venezuelan) [sv], Arabic (United Arab Emeriates) [uae], Arabic (Iraq) [ai], Arabic (Saudi Arabian) [asa], Chinese (Hong Kong) [chk], Chinese (Mainland China) [cmc]"
 read localvar
 if  [ $localvar = e ]
@@ -152,69 +147,37 @@ then
 	export LANG=zh_CN.UTF-8
 	export LANGUAGE=zh_CN.UTF-8
 	export LC_ALL=zh_CN.UTF-8
-else echo "failed to set the locale, please run 'sudo raspi-config' after this script is finished to set the locale..."
-sleep 10s
+else 
+	echo "failed to set the locale, please run 'sudo raspi-config' after this script is finished to set the locale..."
 fi
 sudo locale-gen && echo "Localization changed..."
-sleep 3s
 
 # This removes unnecessary code and gpg key.
 # https://www.reddit.com/r/linux/comments/1bu0t1/microsoft_repo_installed_on_all_raspberry_pis/
 echo "Removing Microsoft code and GPG key..."
-sleep 1s
 sudo rm -f -v /etc/apt/sources.list.d/vscode.list
 sudo rm -f -v /etc/apt/trusted.gpg.d/microsoft.gpg
 
 # Update and install dependencies.
 echo "Updating and installing dependencies..."
-sleep 2s
-u=0
-until [ "$u" -ge 5 ]
-do sudo apt-get update && break && echo "Updated..."
-u=$((u+1))
-sleep 10s
-done
+sudo apt-get update && echo "Updated..."
 
 # Download the dependencies, until the variable is equal to or greater than 5.
 
 echo "Installing wiringpi..."
-sleep 2s
-a=0
-until [ "$a" -ge 5 ]
-do sudo apt-get install -y wiringpi && break
-a=$((a+1))
-sleep 10s
-done
+sudo apt-get install -y wiringpi
 echo "Done..."
 
 echo "Installing python3-pip..."
-sleep 2s
-b=0
-until [ "$b" -ge 5 ]
-do sudo apt-get install -y python3-pip && break
-b=$((b+1))
-sleep 10s
-done
+sudo apt-get install -y python3-pip
 echo "Done..."
 
 echo "Installing python3-numpy..."
-sleep 2s
-c=0
-until [ "$c" -ge 5 ]
-do sudo apt-get install -y python3-numpy && break
-c=$((c+1))
-sleep 10s
-done
+sudo apt-get install -y python3-numpy
 echo "Done..."
 
 echo "Installing python-pil..."
-sleep 2s
-d=0
-until [ "$d" -ge 5 ]
-do sudo apt-get install -y python-pil && break
-d=$((d+1))
-sleep 10s
-done
+sudo apt-get install -y python-pil
 echo "Done..."
 
 echo "Installing libopenjp2-7..."
@@ -417,7 +380,7 @@ sleep 3s
 #passwd
 
 # Reboot options.
-echo "If working on a seperate RPI please enter [1], if on the device you plan to use for your SeedSigner please enter [0]" 
+echo "If working on a separate RPi please enter [1], if on the device you plan to use for your SeedSigner please enter [0]" 
 read powervar
 
 if [ $powervar = 1 ]
