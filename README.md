@@ -14,9 +14,59 @@ ______
 >I need some help testing and getting the script to work properly. If you know shell scripting please consider helping out, thank you.
 
 ______
-Build the SD card image based on: [2021-05-07-raspios-buster-armhf-lite.zip](https://www.raspberrypi.org/software/operating-systems/)
+# Base Image
 
-SHA256: c5dad159a2775c687e9281b1a0e586f7471690ae28f2f2282c90e7d59f64273c
+## Download and verify Raspbian SDcard image for a Raspberry Pi 
+
+* Download the image from https://www.raspberrypi.com/software/operating-systems :
+    ```
+    wget https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip
+    ```
+    SHA256: c5dad159a2775c687e9281b1a0e586f7471690ae28f2f2282c90e7d59f64273c
+* Download the signature of the image file:
+    ```
+    wget https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2021-05-28/2021-05-07-raspios-buster-armhf-lite.zip.sig
+    ```
+* Import the Raspberry Pi Downloads Signing Key:
+    ```
+    curl https://www.raspberrypi.org/raspberrypi_downloads.gpg.key | gpg --import
+    ```
+* Verify the image:  
+    ```
+    gpg --verify 2021-05-07-raspios-buster-armhf-lite.zip.sig
+    ```
+    Look for the `Good signature`:
+    ```
+    gpg: assuming signed data in '2021-05-07-raspios-buster-armhf-lite.zip'
+    gpg: Signature made Fri 28 May 2021 15:00:58 BST
+    gpg:                using RSA key 54C3DD610D9D1B4AF82A37758738CD6B956F460C
+    gpg: Good signature from "Raspberry Pi Downloads Signing Key" [unknown]
+    gpg: WARNING: This key is not certified with a trusted signature!
+    gpg:          There is no indication that the signature belongs to the owner.
+    Primary key fingerprint: 54C3 DD61 0D9D 1B4A F82A  3775 8738 CD6B 956F 460C
+    ```
+
+* Flash the image to an SDcard, can use the [Raspberry Pi Imager](https://www.raspberrypi.org/downloads/)
+
+* put a file called simply: `ssh` to the root of the SDcard.  
+Read more on [how to gain ssh access here](https://www.raspberrypi.org/documentation/remote-access/ssh/).
+* boot up the RPi 
+
+* connect directly with HDMI monitor and keyboard and activate the wifi with:
+    ```
+    sudo raspi-config
+    ```
+    or if using aRaspberry Pi 3 or 4 attach a network cable
+    and log in with ssh to:
+    ```
+    pi@LAN_IP_ADDRESS
+    ```
+    The default password is: `raspberry`
+
+* Continue to download the `seedsigner_build.sh`:
+    ```
+    wget https://raw.githubusercontent.com/openoms/seedsigner_build/main/seedsigner_build.sh
+    ```
 
 ______
 
